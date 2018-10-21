@@ -87,13 +87,17 @@ while iag<maxit
     
     %mantem os 10 pais matriz manter / pegar os 10 filhos
     pop(11:20,:) = filhos; % sobrepõe a matriz pop da linha 11 a 20 com os filhos gerados
+    %% Reordena a populacao para mutar os 10 piores
+    custoPop = cvfun(pop);%calcular o custo da populacao utilizando a funcao de aptidao
+    [custoPop, ind] = sort(custoPop);% colocar o custo minimo no elemento 1 (Veja funcao sort)
+    pop = pop(ind,:);% organizar a populacao com o custo mais baixo primeiro
     
     %% Swap mutation
     % https://github.com/estsauver/GAOT/blob/master/swapMutation.m
     % https://www.tutorialspoint.com/genetic_algorithms/genetic_algorithms_mutation.htm
     % http://www.rubicite.com/Tutorials/GeneticAlgorithms/CrossoverOperators/CycleCrossoverOperator.aspx
     % Faz a Mutacao da populacao
-    for im=1:tamPop
+    for im=10:tamPop %começa na 10a. linha
         par = pop(im,:);
         sz = size(par,2)-1;
         pos1 = round(rand*sz + 0.5);
@@ -121,7 +125,7 @@ end %iga
 melhorCaminho = [pop(1,:) pop(1,1)];
 disp(['Melhor caminho: ', num2str(melhorCaminho)]);
 %num2str(pop(1,:))]);
-disp(['Menor custo: ', num2str(custoPop(1,:))]);
+disp(['Custo médio: ', num2str(custoPop(1,:))]);
 linhaX = [];
 linhaY = [];
 for ip = 1:length(melhorCaminho)
