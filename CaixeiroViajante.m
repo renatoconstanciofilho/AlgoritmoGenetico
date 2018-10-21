@@ -68,8 +68,8 @@ while iag<maxit
         c2=zeros(1,sz);
         pt=find(p1==1); % salva em pt a posicao do 1 no vetor p1
         while (c1(pt)==0) % enquanto c1 posicao pt for 0
-            c1(pt)=p1(pt); % copia a o valor de p1 na posicao pt para c1 na posicao pt
-            pt=find(p1==p2(pt)); % verifica em qual posicao de p1 encontra o numero na posicao pt de p2
+          c1(pt)=p1(pt); % copia a o valor de p1 na posicao pt para c1 na posicao pt
+          pt=find(p1==p2(pt)); % verifica em qual posicao de p1 encontra o numero na posicao pt de p2
         end
         left=find(c1==0); % salva no vetor left as posicoes de c1 que contem zero
         c1(left)=p2(left); % copia para as posicoes que contem zero os valores das mesmas posicoes de p2
@@ -84,12 +84,15 @@ while iag<maxit
         filhos = [filhos;c1];
         filhos = [filhos;c2];
     end
-        
+    
+    %mantem os 10 pais matriz manter / pegar os 10 filhos
     pop(11:20,:) = filhos; % sobrepõe a matriz pop da linha 11 a 20 com os filhos gerados
     
     %% Swap mutation
     % https://github.com/estsauver/GAOT/blob/master/swapMutation.m
     % https://www.tutorialspoint.com/genetic_algorithms/genetic_algorithms_mutation.htm
+    % http://www.rubicite.com/Tutorials/GeneticAlgorithms/CrossoverOperators/CycleCrossoverOperator.aspx
+    % Faz a Mutacao da populacao
     for im=1:tamPop
         par = pop(im,:);
         sz = size(par,2)-1;
@@ -105,36 +108,15 @@ while iag<maxit
         end
         pop(im,:) = child;
     end
-        
-        %indx=2*(ic-2)+1;
-        %xp=ceil(rand*npar);
-        
-        % Faz a técnica de recombinação Cycle
-        % http://www.rubicite.com/Tutorials/GeneticAlgorithms/CrossoverOperators/CycleCrossoverOperator.aspx
-        % https://github.com/estsauver/GAOT/blob/master/cyclicXover.m
-
-        %mantem os 10 pais matriz manter / pegar os 10 filhos
-    % Faz a Mutacao da populacao
-
-    % tipos de mutação
-    
-   
-    % Se calcula um novo custo para a nova população
-    
-    
-    %_______________________________________________________
-    % Organiza em ordem crescente os custos e associa aos parametros
     %% Recalcula custo e reorganiza população
     custoPop = cvfun(pop);%calcular o custo da populacao utilizando a funcao de aptidao
     [custoPop, ind] = sort(custoPop);% colocar o custo minimo no elemento 1 (Veja funcao sort)
     pop = pop(ind,:);% organizar a populacao com o custo mais baixo primeiro
     minc(1) = min(custoPop);% calcula o custo minimo da populacao (veja funcao min)
     meanc(1) = mean(custoPop);% calcula a media aritmetica da populacao (veja funcao mean)
-    plot(iag,minc(1),'.');
+    %plot(iag,minc(1),'.');
+    plot(iag,meanc(1),'.');
 end %iga
-
-
-%_______________________________________________________
 %% Mostrar os resultados
 melhorCaminho = [pop(1,:) pop(1,1)];
 disp(['Melhor caminho: ', num2str(melhorCaminho)]);
